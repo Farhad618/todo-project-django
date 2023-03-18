@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+  	<h1>home</h1>
+    <ul>
+      {% for task in tasks %}
+        <li>
+          <details>
+            <summary>
+              {{ task.tsk_id }}. {{ task.tsk_title }}
+            </summary>
+            <div>
+              {{ task.tsk_desc }}
+            </div>
+            <div>{{ task.tsk_priority }}</div>
+            <div>{{ task.created_date }}</div>
+            <div>{{ task.due_date }}, {{ task.due_time }}</div>
+            <div>{{ task.is_completed }}</div>
+            <form method="POST" action="{% url "task" id=task.tsk_id %}">
+              {% csrf_token %}
+              <input type="submit" value="Update" />
+            </form>
+            <form method="POST" action="{% url "delete" id=task.tsk_id %}">
+              {% csrf_token %}
+              <input type="submit" value="Delete" />
+            </form>
+          </details>
+        </li>
+      {% endfor %}
+    </ul>
+    <hr>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" name="Add" />
+    </form>
+  {% endblock content %}
